@@ -55,21 +55,19 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
-         it('Menu Link is clicked and Class is applied',function(){
+         it('Menu Link is clicked and Class is applied',function(done){
             $('.menu-icon-link').click( function(){
-                expect($('body').toggledClass()).toBe('menu-hidden')}
+                expect($('body').hasClass('menu-hidden')).toBe(true)}
             )
          });
            
         });
         describe('Initial Entries',function(){
         beforeEach(function(done) {
-            setTimeout(function() {
-                loadFeed()
+                init()
               done();
           
-            }, 100);
-          });
+            });
         it('LoadFeed is completed',function(done){
             expect(loadFeed()).toBeDefined();
         });
@@ -77,15 +75,13 @@ $(function() {
  
     describe('New Feed Selection', function(){
      beforeEach(function(done) {
-        setTimeout(function() {
-            loadFeed(0,done());
+        allFeeds.forEach(function(feed){
+            loadFeed(feed,done());
           done();
-        }, 100);
+     })});
       });
      it('New Feed is loaded', function(){
         expect($('body').hasClass('tpl-feed-list-item')).toBe(true);
      });
 
     });
-    
-});
