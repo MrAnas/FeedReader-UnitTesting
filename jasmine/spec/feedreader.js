@@ -55,33 +55,44 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
-         it('Menu Link is clicked and Class is applied',function(done){
-            $('.menu-icon-link').click( function(){
+         it('Menu Link is clicked and Class is applied',function(){
+             if($('body').hasClass('menu-hidden')){
+            $('a.menu-icon-link').click( function(){
+                expect($('body').hasClass('menu-hidden')).toBe(false)}
+            )
+        }
+        if(!$('body').hasClass('menu-hidden')){
+            $('a.menu-icon-link').click( function(){
                 expect($('body').hasClass('menu-hidden')).toBe(true)}
             )
-         });
-           
+        }
+         });  
         });
         describe('Initial Entries',function(){
         beforeEach(function(done) {
-                init()
+            loadFeed(0, function() {
+                done();
+               });
               done();
           
             });
         it('LoadFeed is completed',function(done){
-            expect(loadFeed()).toBeDefined();
+            expect($('.feed .entry').toBeGreaterThan(0));
         });
         });
  
     describe('New Feed Selection', function(){
      beforeEach(function(done) {
-        allFeeds.forEach(function(feed){
-            loadFeed(feed,done());
-          done();
+        loadFeed(0, function() {
+            variable1 = $('.feed').html();
+             loadFeed(1, function() {
+                 variable2 = $('.feed').html();
+                 done();
+             });
      })});
       });
      it('New Feed is loaded', function(){
-        expect($('body').hasClass('tpl-feed-list-item')).toBe(true);
+        expect(variable2).toEqual(variable1);
      });
 
     });
